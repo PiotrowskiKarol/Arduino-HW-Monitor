@@ -1,0 +1,15 @@
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\HWM-App.exe.config
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\HWM-App.exe
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\HWM-App.pdb
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\HidSharp.dll
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\LibreHardwareMonitorLib.dll
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\System.CodeDom.dll
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\HidSharp.pdb
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\HidSharp.xml
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\LibreHardwareMonitorLib.xml
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\bin\Debug\System.CodeDom.xml
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\obj\Debug\HWM-App.csproj.AssemblyReference.cache
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\obj\Debug\HWM-App.csproj.CoreCompileInputs.cache
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\obj\Debug\HWM-App.csproj.CopyComplete
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\obj\Debug\HWM-App.exe
+C:\Users\Karol\#Project\Arduino-HW-Monitor\HWM-App\obj\Debug\HWM-App.pdb
