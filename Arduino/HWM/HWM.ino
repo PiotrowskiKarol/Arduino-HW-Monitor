@@ -20,6 +20,7 @@
 #include <TFT_eSPI.h>  // Graphics and font library for ST7735 driver chip
 #include <SPI.h>
 #include "FPSCounter.h"
+//#include "DisplayedValue.h"
 
 TFT_eSPI tft = TFT_eSPI();
 FPSCounter fps = FPSCounter();  // Invoke library, pins defined in User_Setup.h
