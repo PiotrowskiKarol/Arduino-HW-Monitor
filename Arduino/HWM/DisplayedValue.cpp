@@ -13,7 +13,8 @@
 
     void DisplayedValue::setValue(int newValue)
     {
-      return;
+      value = String(newValue);
+      value_changed = true;
     }
 
     String DisplayedValue::getValue()

@@ -90,9 +90,9 @@ void drawDebugInfo() {
   // String brightnessInfo = String("Bright: ") += String(screenBrightness);
   // tft.drawString(brightnessInfo, 65, 0, 2);
 
-  if(fps.fpsChanged())
+  if(fps.fpsValue.valueChanged())
   {
-    String fpsInfo = String("FPS: ") += String(fps.getFps());
+    String fpsInfo = String("FPS: ") += fps.fpsValue.getValue();
     tft.drawString(fpsInfo, 3, 20, 2);
   }
  
