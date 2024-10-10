@@ -34,6 +34,7 @@ namespace FormTestApp
         {
             this.Invoke(new Action(delegate ()
             {
+                send_new_data();
                 Update_Label();
                 Update_Tree();
             }));
@@ -71,6 +72,21 @@ namespace FormTestApp
                 }
                 subNode.Nodes[sensor.Name].Text = sensor.Value.ToString();
             }
+        }
+
+        private void send_new_data()
+        {
+            if (!serial.isConnected())
+                return;
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("D:");
+            foreach (ISensor sensor in HWMService.GetLoads())
+            {
+                String value = sensor.Value.ToString().Substring(0, 4).Replace(",",".");
+                sb.Append(value + ";");
+            }
+            serial.sendData(sb.ToString());
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, EventArgs e)

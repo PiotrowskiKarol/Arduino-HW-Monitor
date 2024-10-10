@@ -6,5 +6,7 @@
         void stopCommunication();
         void sendData(string text);
         void readData();
+
+        bool isConnected();
     }
 }

@@ -44,5 +44,10 @@ namespace FormHWPApp.Arduino
         {
             Close();
         }
+
+        public bool isConnected()
+        {
+            return port != null;
+        }
     }
 }
