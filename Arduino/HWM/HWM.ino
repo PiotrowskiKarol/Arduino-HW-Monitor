@@ -116,15 +116,15 @@ void setBrightness(char brightness) {
 
   switch(brightness) {
     case '0': {
-      analogWrite(9, 0);
+      analogWrite(PIN_D2, 0);
       break;
     }
     case '1': {
-      analogWrite(9, 100);
+      analogWrite(PIN_D2, 20);
       break;
     }
     case '2': {
-      analogWrite(9, 255);
+      analogWrite(PIN_D2, 255);
       break;
     }
   }
