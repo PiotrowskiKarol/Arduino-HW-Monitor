@@ -83,7 +83,14 @@ namespace FormTestApp
             sb.Append("D:");
             foreach (ISensor sensor in HWMService.GetLoads())
             {
-                String value = sensor.Value.ToString().Substring(0, 4).Replace(",",".");
+                String value = sensor.Value.ToString().Replace(",",".");
+                if(value.Length > 4)
+                {
+                    value = value.Substring(0, 4);
+                } else if(value.Length == 1)
+                {
+                    value = value + ".00";
+                }
                 sb.Append(value + ";");
             }
             serial.sendData(sb.ToString());
