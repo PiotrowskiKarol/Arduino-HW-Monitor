@@ -64,6 +64,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="HWM\HWMData.cs" />
     <Compile Include="HWM\PeriodicalTask.cs" />
     <Compile Include="HWM\HWMService.cs" />
     <Compile Include="Program.cs" />

@@ -16,10 +16,6 @@ namespace FormHWPApp.HWM
         private Action coreAction;
         private event Action afterAction;
 
-        /*public PeriodicalTask(Action coreAction)
-        {
-            this.coreAction = coreAction;
-        }*/
         public void setCoreAction(Action action)
         {
             this.coreAction = action;
@@ -28,7 +24,7 @@ namespace FormHWPApp.HWM
         public void StartTask()
         {
             doUpdate = true;
-            Thread thread = new Thread(new ThreadStart(doJob));
+            Thread thread = new Thread(new ThreadStart(DoTask));
             thread.Start();
         }
 
@@ -37,7 +33,7 @@ namespace FormHWPApp.HWM
             doUpdate = false;
         }
 
-        private void doJob()
+        private void DoTask()
         {
             while (doUpdate)
             {

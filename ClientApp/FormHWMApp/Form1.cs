@@ -30,14 +30,13 @@ namespace FormTestApp
             this.ShowInTaskbar = true;
 
             periodicalTask.addAction(Tick);
-            //HWMService.NewData += Tick;
         }
 
         public void Tick()
         {
             this.Invoke(new Action(delegate ()
             {
-                //send_new_data();
+                send_new_data();
                 Update_Label();
                 Update_Tree();
             }));
