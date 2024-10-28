@@ -36,15 +36,13 @@ unsigned long millis_time = 0;
 int received = 0;
 char screenMode = '0';
 bool screenModeChanged = true;
-char screenBrightness = '1';
+char screenBrightness = '2';
 
 #define MYFONT10 &Orbitron_Medium_10
 #define MYFONT15 &Orbitron_Medium_15
 #define MYFONT16 &Orbitron_Medium_16
 
 #define DEFAU &Font7srle
-
-
 
 #define MYFONT1 &Font4x5Fixed
 #define MYFONT2 &Font4x7Fixed

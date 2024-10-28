@@ -12,12 +12,9 @@ namespace FormTestApp.HWM
     public class HWMService
     {
         public static volatile Dictionary<string, Dictionary<string, List<ISensor>>> pc;
-        public static volatile bool doUpdate = true;
-        public static int milisUpdateRate = 1000;
+
         public static int pcUpdatedCounter = 0;
         public static Computer computer;
-
-        public static event Action NewData;
         
         public string GetTemp()
         {
@@ -40,7 +37,9 @@ namespace FormTestApp.HWM
                 IsMotherboardEnabled = true,
                 IsControllerEnabled = true,
                 IsNetworkEnabled = true,
-                IsStorageEnabled = true
+                IsStorageEnabled = true,
+                IsPsuEnabled = false,
+                IsBatteryEnabled = false,
             };
 
             pc.Open();
@@ -55,22 +54,21 @@ namespace FormTestApp.HWM
         public void StartThread()
         {
             Open();
-            doUpdate = true;
-            Thread thread = new Thread(new ThreadStart(RefreshData));
-            thread.Start();
+            //doUpdate = true;
+            //Thread thread = new Thread(new ThreadStart(RefreshData));
+            //thread.Start();
         }
 
         public void StopThread()
         {
             //Close();
-            doUpdate = false;
+            //doUpdate = false;
             pcUpdatedCounter = 0;
         }
 
         public void RefreshData()
         {
-            while (doUpdate)
-            {
+            
                 pcUpdatedCounter++;
                 computer.Accept(new UpdateVisitor());
                 pc = new Dictionary<string, Dictionary<string, List<ISensor>>>();
@@ -99,13 +97,9 @@ namespace FormTestApp.HWM
                         }
                         pc[hardware.Name][sensor.SensorType.ToString()].Add(sensor);
                     }
-                }
-
-                NewData?.BeginInvoke(NewData.EndInvoke, null);
-                //NewData?.Invoke();
-                Thread.Sleep(milisUpdateRate);
+                } 
                
-            }
+            
             
         }
 

@@ -1,4 +1,5 @@
 ﻿using FormHWPApp.Arduino;
+using FormHWPApp.HWM;
 using FormTestApp.HWM;
 using LibreHardwareMonitor.Hardware;
 using System;
@@ -18,23 +19,25 @@ namespace FormTestApp
     {
         private HWMService HWMService;
         private ISerialCommunication serial;
+        private PeriodicalTask PeriodicalTask;
      
-        public Form1(HWMService HWMService, ISerialCommunication arduinoSerial)
+        public Form1(HWMService HWMService, ISerialCommunication arduinoSerial, PeriodicalTask periodicalTask)
         {
             InitializeComponent();
             this.HWMService = HWMService;
             this.serial = arduinoSerial;
             this.WindowState = FormWindowState.Normal;
             this.ShowInTaskbar = true;
-            HWMService.NewData += Tick;
-     
+
+            periodicalTask.addAction(Tick);
+            //HWMService.NewData += Tick;
         }
 
-        private void Tick()
+        public void Tick()
         {
             this.Invoke(new Action(delegate ()
             {
-                send_new_data();
+                //send_new_data();
                 Update_Label();
                 Update_Tree();
             }));

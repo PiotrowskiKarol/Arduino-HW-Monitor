@@ -10,7 +10,7 @@ namespace FormHWPApp.Arduino
     class Arduino : ISerialCommunication
     {
         private SerialPort port;
-        private String serialPort = "COM4";
+        private String serialPort = "COM9";
         private int boundwith = 9600;
 
         public void sendData(string text)

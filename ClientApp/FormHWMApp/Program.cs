@@ -1,4 +1,5 @@
 ﻿using FormHWPApp.Arduino;
+using FormHWPApp.HWM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +16,21 @@ namespace FormTestApp
         [STAThread]
         static void Main()
         {
-            Arduino arduino = new Arduino();
-
             HWM.HWMService hwmService = new HWM.HWMService();
             hwmService.Open();
-            hwmService.StartThread();
 
+            Arduino arduino = new Arduino();
             
+            PeriodicalTask periodical = new PeriodicalTask();
+            periodical.setCoreAction(hwmService.RefreshData);
+
+            periodical.StartTask();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(hwmService, arduino));
+            Application.Run(new Form1(hwmService, arduino, periodical));
+
+            
         }
     }
 }
