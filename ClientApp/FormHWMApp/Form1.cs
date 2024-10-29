@@ -20,14 +20,16 @@ namespace FormTestApp
         private HWMService HWMService;
         private ISerialCommunication serial;
         private PeriodicalTask PeriodicalTask;
+        private IHWMData HWMData;
      
-        public Form1(HWMService HWMService, ISerialCommunication arduinoSerial, PeriodicalTask periodicalTask)
+        public Form1(HWMService HWMService, IHWMData HWMData, ISerialCommunication arduinoSerial, PeriodicalTask periodicalTask)
         {
             InitializeComponent();
             this.HWMService = HWMService;
             this.serial = arduinoSerial;
             this.WindowState = FormWindowState.Normal;
             this.ShowInTaskbar = true;
+            this.HWMData = HWMData;
 
             periodicalTask.addAction(Tick);
         }
@@ -45,7 +47,7 @@ namespace FormTestApp
         private void Update_Label()
         {
            
-           label1.Text = HWMService.pcUpdatedCounter.ToString();
+           label1.Text = HWMData.getUpdateCounter().ToString();
            
         }
 
@@ -59,7 +61,7 @@ namespace FormTestApp
             }
             TreeNode rootNode = treeView1.Nodes["root"];
 
-            foreach (ISensor sensor in HWMService.GetLoads())
+            foreach (ISensor sensor in HWMData.GetLoads())
             {
                 if (!rootNode.Nodes.ContainsKey(sensor.Name))
                 {
@@ -83,7 +85,7 @@ namespace FormTestApp
 
             StringBuilder sb = new StringBuilder();
             sb.Append("D:");
-            foreach (ISensor sensor in HWMService.GetLoads())
+            foreach (ISensor sensor in HWMData.GetLoads())
             {
                 String value = sensor.Value.ToString().Replace(",",".");
                 if(value.Length > 4)

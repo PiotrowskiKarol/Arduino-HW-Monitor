@@ -19,16 +19,16 @@ namespace FormTestApp
             HWM.HWMService hwmService = new HWM.HWMService();
             hwmService.Open();
 
+            HWMData HWMData = new HWMData(hwmService);
             Arduino arduino = new Arduino();
             
             PeriodicalTask periodical = new PeriodicalTask();
-            periodical.setCoreAction(hwmService.RefreshData);
-
+            periodical.setCoreAction(HWMData.GetNewBatch);
             periodical.StartTask();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(hwmService, arduino, periodical));
+            Application.Run(new Form1(hwmService, HWMData, arduino, periodical));
 
             
         }
