@@ -34,9 +34,13 @@ FPSCounter fps = FPSCounter();  // Invoke library, pins defined in User_Setup.h
 unsigned long millis_time = 0;
 //received com messages
 int received = 0;
-char screenMode = '0';
 bool screenModeChanged = true;
 char screenBrightness = '2';
+
+char screenMode = '0';
+String screenLabel = "Wait";
+String dataUnit = "na";
+int dataSize = 0;
 
 #define MYFONT10 &Orbitron_Medium_10
 #define MYFONT15 &Orbitron_Medium_15
@@ -70,9 +74,9 @@ void loop() {
     Serial.println(str);
     received++;
 
-    if(str.charAt(0) == 'C') {
+    if (str.charAt(0) == 'C') {
       executeCommand(str.substring(2));
-    } else if(str.charAt(0) == 'D') {
+    } else if (str.charAt(0) == 'D') {
       //Serial.println("Received data...");
       drawCPU(str.substring(2));
     }
@@ -80,31 +84,34 @@ void loop() {
 
   fps.countFps();
   drawDebugInfo();
-  
 }
 
 
 
-void executeCommand(String command) {
+void executeCommand(String commandData) {
   Serial.print("Processing command: ");
-  Serial.println(command);
-  char commandChar = command.charAt(0);
-  char value = command.charAt(2);
+  Serial.println(commandData);
+  char commandChar = commandData.charAt(0);
+  //char value = command.charAt(3);
 
-  switch(commandChar) {
-    case 'B': {
-      setBrightness(value);
-      break;
-    }
-    case 'S': {
-      setScreenMode(value);
-      break;
-    }
+
+
+  switch (commandChar) {
+    case 'B':
+      {
+        setBrightness('2');
+        break;
+      }
+    case 'M':
+      {
+        setScreenMode(commandData.substring(2));
+        break;
+      }
   }
 }
 
 void drawDebugInfo() {
-  if(!fps.fpsValue.valueChanged())
+  if (!fps.fpsValue.valueChanged())
     return;
 
   tft.setTextColor(TFT_PURPLE, TFT_ORANGE);
@@ -122,65 +129,81 @@ void drawCPU(String data) {
 
   int startIndex = 0;
   int endIndex;
-  for(int i = 0; i < 9; i++)
-  {
+  for (int i = 0; i < 9; i++) {
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
-    tft.drawString("TH1", 0, 16*i + 12);
+    tft.drawString("TH1", 0, 16 * i + 12);
 
     endIndex = data.indexOf(';', startIndex + 1);
     String singleData = data.substring(startIndex, endIndex);
     startIndex = endIndex + 1;
-    
+
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
-    if(singleData.toDouble() > 50) {
+    if (singleData.toDouble() > 50) {
       tft.setTextColor(TFT_YELLOW, TFT_BLACK);
     }
     //tft.drawString(singleData, 2, 14*i + 12, 2);
-    
-    tft.drawString(singleData, 34, 14*i + 12);
+
+    tft.drawString(singleData, 34, 14 * i + 12);
   }
 }
 
 void drawHeader() {
   tft.fillRect(0, 0, 159, 12, TFT_ORANGE);
-  tft.drawLine(80,13,80,128, TFT_WHITE);
-  tft.drawLine(81,13,81,128, TFT_WHITE);
+  tft.drawLine(80, 13, 80, 128, TFT_WHITE);
+  tft.drawLine(81, 13, 81, 128, TFT_WHITE);
   //tft.fillRect(80, 13, 81, 120, TFT_WHITE);
   tft.setTextColor(TFT_WHITE);
   tft.drawString("CPU LOAD", 5, -2, 2);
 }
 
-void setScreenMode(char mode) {
-  screenModeChanged = true;
-  screenMode = mode;
-  
-    // tft.fillRect(0, 0, 159, 32, TFT_BLACK);
-    // tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    // tft.drawString(String(received), 0, 55, 4);
-    // tft.drawString(String(sizeof(str)), 0, 80, 4);
-    // tft.setTextColor(TFT_GREEN, TFT_BLACK);
-    // tft.drawString(str, 0, 10, 4);
-    // tft.drawString(str, 0, 10, 4);
+void setScreenMode(String commandData) {
+
+  Serial.print("Processing screen command: ");
+  Serial.println(commandData);
+
+  // char screenMode = '0';
+  // String screenLabel = "Wait";
+  // String dataUnit = "na";
+  // int dataSize = 0;
+
+  int startIndex = 0;
+  int endIndex;
+  for (int i = 0; i < 4; i++) {
+    //tft.setTextColor(TFT_GREEN, TFT_BLACK);
+    //tft.drawString("TH1", 0, 16 * i + 12);
+
+    //C>B:V=1
+    //C>M:V=1:L=CPU TEMP:U=%:S=8
+
+    endIndex = commandData.indexOf(':', startIndex + 1);
+    String singleData = commandData.substring(startIndex, endIndex);
+    startIndex = endIndex + 1;
+
+    int indexOfSplitter = singleData.indexOf('=');
+    String type = singleData.substring(0, indexOfSplitter);
+    String value = singleData.substring(indexOfSplitter+1);
+  }
 }
 
 void setBrightness(char brightness) {
   screenBrightness = brightness;
 
-  switch(brightness) {
-    case '0': {
-      analogWrite(PIN_D2, 0);
-      //analogWrite(9, 0); ???
-      break;
-    }
-    case '1': {
-      analogWrite(PIN_D2, 20);
-      break;
-    }
-    case '2': {
-      analogWrite(PIN_D2, 255);
-      break;
-    }
+  switch (brightness) {
+    case '0':
+      {
+        analogWrite(PIN_D2, 0);
+        //analogWrite(9, 0); ???
+        break;
+      }
+    case '1':
+      {
+        analogWrite(PIN_D2, 20);
+        break;
+      }
+    case '2':
+      {
+        analogWrite(PIN_D2, 255);
+        break;
+      }
   }
-  
 }
-
