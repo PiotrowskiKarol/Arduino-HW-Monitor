@@ -6,7 +6,7 @@ namespace FormHWPApp.HWM
     public interface IHWMData
     {
         int getUpdateCounter();
-
         List<ISensor> GetLoads();
+        PCData GetData();
     }
 }

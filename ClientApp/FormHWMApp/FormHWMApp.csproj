@@ -64,10 +64,14 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="HWM\HardwareData\ComponentData.cs" />
+    <Compile Include="HWM\HardwareData\DataEntry.cs" />
+    <Compile Include="HWM\HardwareData\PCComponent.cs" />
+    <Compile Include="HWM\HardwareData\PCData.cs" />
     <Compile Include="HWM\HWMData.cs" />
     <Compile Include="HWM\IHWMData.cs" />
     <Compile Include="HWM\IHWMDataService.cs" />
-    <Compile Include="HWM\PeriodicalTask.cs" />
+    <Compile Include="PeriodicalTask.cs" />
     <Compile Include="HWM\HWMService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

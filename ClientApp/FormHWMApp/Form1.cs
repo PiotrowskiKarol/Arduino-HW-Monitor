@@ -2,6 +2,7 @@
 using FormHWPApp.HWM;
 using FormTestApp.HWM;
 using LibreHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware.Cpu;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +22,7 @@ namespace FormTestApp
         private ISerialCommunication serial;
         private PeriodicalTask PeriodicalTask;
         private IHWMData HWMData;
-     
+
         public Form1(HWMService HWMService, IHWMData HWMData, ISerialCommunication arduinoSerial, PeriodicalTask periodicalTask)
         {
             InitializeComponent();
@@ -38,43 +39,69 @@ namespace FormTestApp
         {
             this.Invoke(new Action(delegate ()
             {
-                send_new_data();
-                Update_Label();
+                //Update_Label();
                 Update_Tree();
             }));
         }
 
         private void Update_Label()
         {
-           
-           label1.Text = HWMData.getUpdateCounter().ToString();
-           
+
+            label1.Text = HWMData.getUpdateCounter().ToString();
+
         }
 
         private void Update_Tree()
         {
-           
+            if (HWMData.GetData() is null)
+                return;
 
-            if (!treeView1.Nodes.ContainsKey("root"))
+            foreach (PCComponent component in HWMData.GetData().data)
             {
-                treeView1.Nodes.Add("root", "CPU");
+                if (!treeView1.Nodes.ContainsKey(component.name))
+                {
+                    treeView1.Nodes.Add(component.name, component.name);
+                }
+                TreeNode rootNode = treeView1.Nodes[component.name];
+
+                Dictionary<string, List<ComponentData>> componetesTypes = component.getComponentsByType();
+
+                foreach (string componentType in componetesTypes.Keys)
+                {
+                    if (!rootNode.Nodes.ContainsKey(componentType))
+                    {
+                        rootNode.Nodes.Add(componentType, componentType);
+                    }
+                    TreeNode subNode = rootNode.Nodes[componentType];
+                    //subNode.ExpandAll();
+
+                    foreach (ComponentData componentData in componetesTypes[componentType])
+                    {
+                        if (!subNode.Nodes.ContainsKey(componentData.name))
+                        {
+                            subNode.Nodes.Add(componentData.name, componentData.name);
+                        }
+                        TreeNode subSubNode = subNode.Nodes[componentData.name];
+
+                        if (!subSubNode.Nodes.ContainsKey(componentData.name))
+                        {
+                            subSubNode.Nodes.Add(componentData.name, componentData.name);
+                        }
+                        subSubNode.Nodes[componentData.name].Text = componentData.value;
+                    }
+                }
             }
-            TreeNode rootNode = treeView1.Nodes["root"];
+        }
 
-            foreach (ISensor sensor in HWMData.GetLoads())
+        private void UpdateNodeText(TreeNode node, string text)
+        {
+            if (this.InvokeRequired)
             {
-                if (!rootNode.Nodes.ContainsKey(sensor.Name))
-                {
-                    rootNode.Nodes.Add(sensor.Name, sensor.Name);
-                }
-                TreeNode subNode = rootNode.Nodes[sensor.Name];
-                subNode.ExpandAll();
-
-                if (!subNode.Nodes.ContainsKey(sensor.Name))
-                {
-                    subNode.Nodes.Add(sensor.Name, sensor.Value.ToString());
-                }
-                subNode.Nodes[sensor.Name].Text = sensor.Value.ToString();
+                this.Invoke(new Action<TreeNode, string>(UpdateNodeText), node, text);
+            }
+            else
+            {
+                node.Text = text;
             }
         }
 
@@ -87,11 +114,12 @@ namespace FormTestApp
             sb.Append("D:");
             foreach (ISensor sensor in HWMData.GetLoads())
             {
-                String value = sensor.Value.ToString().Replace(",",".");
-                if(value.Length > 4)
+                String value = sensor.Value.ToString().Replace(",", ".");
+                if (value.Length > 4)
                 {
                     value = value.Substring(0, 4);
-                } else if(value.Length == 1)
+                }
+                else if (value.Length == 1)
                 {
                     value = value + ".00";
                 }
@@ -138,7 +166,7 @@ namespace FormTestApp
 
         private void button3_Click(object sender, EventArgs e)
         {
-            HWMService.StartThread();   
+            HWMService.StartThread();
         }
 
         private void button1_Click_1(object sender, EventArgs e)

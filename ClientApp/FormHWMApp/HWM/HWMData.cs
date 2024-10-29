@@ -12,6 +12,8 @@ namespace FormHWPApp.HWM
     public class HWMData : IHWMData
     {
         public static volatile Dictionary<string, Dictionary<string, List<ISensor>>> pc;
+        public static volatile PCData PCData;
+
         public static int pcUpdatedCounter = 0;
 
         private readonly IHWMDataService HWMDataService;
@@ -52,6 +54,28 @@ namespace FormHWPApp.HWM
                 }
             }
 
+            PCData pcData = new PCData();
+            pcData.pcname = "PECET";
+           
+
+            foreach (IHardware hardware in computer.Hardware)
+            {
+                PCComponent pcComponent = new PCComponent();
+                pcComponent.name = hardware.Name;
+
+                pcData.data.Add(pcComponent);
+
+                foreach (ISensor sensor in hardware.Sensors)
+                {
+                    ComponentData componentData = new ComponentData();
+                    componentData.value = sensor.Value.ToString();
+                    componentData.type = sensor.SensorType.ToString();
+                    componentData.name = sensor.Name;
+                    pcComponent.components.Add(componentData);
+                }
+            }
+            PCData = pcData;
+
             pcUpdatedCounter++;
         }
 
@@ -69,6 +93,11 @@ namespace FormHWPApp.HWM
         public int getUpdateCounter()
         {
            return pcUpdatedCounter;
+        }
+
+        public PCData GetData()
+        {
+            return PCData;
         }
     }
 }
