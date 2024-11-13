@@ -1,11 +1,6 @@
 ﻿using FormTestApp.HWM;
 using LibreHardwareMonitor.Hardware;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FormHWPApp.HWM
 {
@@ -45,7 +40,6 @@ namespace FormHWPApp.HWM
 
                 foreach (ISensor sensor in hardware.Sensors)
                 {
-                    //Console.WriteLine("\tSensor: {0}, value: {1}", sensor.Name, sensor.Value);
                     if (!pc[hardware.Name].ContainsKey(sensor.SensorType.ToString()))
                     {
                         pc[hardware.Name].Add(sensor.SensorType.ToString(), new List<ISensor>());
